@@ -5,7 +5,7 @@ import { Msg, userMsg, systemMsg } from "../OpenAI";
 export type KeyWord = {
   title: string;
   description: string;
-}
+};
 
 export class KeyWordAgent extends Agent {
   keyWords: KeyWord[];
@@ -17,7 +17,7 @@ export class KeyWordAgent extends Agent {
 
   getKeyWordContextPrompts(): Msg[] {
     if (this.keyWords.length == 0) {
-      return []
+      return [];
     }
 
     return [systemMsg(`
@@ -63,7 +63,11 @@ Example output format:
     const response = await this._sendMessage(localConvo);
 
     try {
-      this.keyWords = JSON.parse(response);
+      const outputText = response.trim();
+      console.log("JSON data:", outputText);
+      const parsedData = JSON.parse(outputText);
+
+      this.keyWords = parsedData;
     } catch (e) {
       console.log("Agent response:", response);
       console.log(e);

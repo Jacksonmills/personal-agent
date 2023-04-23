@@ -5,7 +5,7 @@ productive.
 ## Setup
 ```
 npm install
-npm start run
+npm run start
 ```
 
 ## Commands

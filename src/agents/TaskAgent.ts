@@ -8,7 +8,7 @@ export type Task = {
   title: string;
   description: string;
   tags: string[];
-}
+};
 
 export class TaskAgent extends Agent {
   tasks: Task[];
@@ -21,7 +21,7 @@ export class TaskAgent extends Agent {
 
   getTaskContextPrompts(): Msg[] {
     if (this.tasks.length == 0) {
-      return []
+      return [];
     }
 
     return [systemMsg(`
@@ -48,7 +48,12 @@ ${JSON.stringify(this.tasks)}
 ${JSON.stringify(convo)}
     `)]);
 
-    this.tasks = JSON.parse(response);
+    try {
+      this.tasks = JSON.parse(response);
+    } catch (error) {
+      console.error("Error parsing API response:", response);
+      console.error(error);
+    }
     this.saveTasks();
   }
 
@@ -60,7 +65,12 @@ ${JSON.stringify(convo)}
     if (fs.existsSync(TASK_FILE)) {
       console.log("Loading tasks...");
       const jsonData = fs.readFileSync(TASK_FILE, 'utf-8');
-      this.tasks = JSON.parse(jsonData) as Task[];
+      try {
+        this.tasks = JSON.parse(jsonData) as Task[];
+      } catch (error) {
+        console.error("Error parsing tasks from file:", jsonData);
+        console.error(error);
+      }
     }
   }
 }

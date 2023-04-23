@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import axios from 'axios';
 import * as process from 'process';
-const { encode } = require('gpt-3-encoder');
+import { encode } from 'gpt-3-encoder';
 
 dotenv.config({ path: '.env.local' });
 
@@ -11,7 +11,7 @@ const API_KEY = process.env.OPENAI_KEY;
 export type Msg = {
   "role": string;
   "content": string;
-}
+};
 
 export function userMsg(message: string): Msg {
   return { role: "user", content: message };
